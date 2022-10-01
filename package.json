@@ -1,6 +1,6 @@
 {
   "name": "create-rust",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "description": "An easy way to create a Rust project",
   "type": "module",
   "bin": {

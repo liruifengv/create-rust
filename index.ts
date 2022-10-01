@@ -3,7 +3,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import prompts from "prompts";
 import minimist from "minimist";
-import { red, bold, green } from "kolorist";
+import { bold, green, red } from "kolorist";
 
 /**
  * @param {string} dir
@@ -28,11 +28,11 @@ function isEmpty(path) {
 }
 
 function copy(src, dest) {
-  const stat = fs.statSync(src)
+  const stat = fs.statSync(src);
   if (stat.isDirectory()) {
-    copyDir(src, dest)
+    copyDir(src, dest);
   } else {
-    fs.copyFileSync(src, dest)
+    fs.copyFileSync(src, dest);
   }
 }
 
@@ -40,12 +40,12 @@ function copy(src, dest) {
  * @param {string} srcDir
  * @param {string} destDir
  */
- function copyDir(srcDir, destDir) {
-  fs.mkdirSync(destDir, { recursive: true })
+function copyDir(srcDir, destDir) {
+  fs.mkdirSync(destDir, { recursive: true });
   for (const file of fs.readdirSync(srcDir)) {
-    const srcFile = path.resolve(srcDir, file)
-    const destFile = path.resolve(destDir, file)
-    copy(srcFile, destFile)
+    const srcFile = path.resolve(srcDir, file);
+    const destFile = path.resolve(destDir, file);
+    copy(srcFile, destFile);
   }
 }
 
@@ -117,28 +117,29 @@ async function init() {
     fs.mkdirSync(root);
   }
 
-  const templateDir = "./template/rust-project"
+  const templateRoot = path.resolve(__dirname, "template");
+  const templateDir = path.resolve(templateRoot, "rust-project");
 
   const write = (file, content) => {
-    const targetPath = path.join(root, file)
+    const targetPath = path.join(root, file);
     if (content) {
-      fs.writeFileSync(targetPath, content)
+      fs.writeFileSync(targetPath, content);
     } else {
-      copy(path.join(templateDir, file), targetPath)
+      copy(path.join(templateDir, file), targetPath);
     }
-  }
+  };
 
-  const files = fs.readdirSync(templateDir)
+  const files = fs.readdirSync(templateDir);
   for (const file of files) {
-    write(file)
+    write(file);
   }
 
-  console.log(`\nDone. Now run:\n`)
+  console.log(`\nDone. Now run:\n`);
   if (root !== cwd) {
-    console.log(`  ${bold(green(`cd ${path.relative(cwd, root)}`))}`)
+    console.log(`  ${bold(green(`cd ${path.relative(cwd, root)}`))}`);
   }
-  console.log(`  ${bold(green('cargo run'))}`)
-  console.log()
+  console.log(`  ${bold(green("cargo run"))}`);
+  console.log();
 }
 
 init().catch((e) => {

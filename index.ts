@@ -3,7 +3,7 @@ import * as fs from "node:fs";
 import * as path from "node:path";
 import prompts from "prompts";
 import minimist from "minimist";
-import { red } from "kolorist";
+import { red, bold, green } from "kolorist";
 
 /**
  * @param {string} dir
@@ -25,6 +25,28 @@ function isEmpty(path) {
   const isEmpty = files.length === 0 ||
     (files.length === 1 && files[0] === ".git");
   return files.length === 0 || (files.length === 1 && files[0] === ".git");
+}
+
+function copy(src, dest) {
+  const stat = fs.statSync(src)
+  if (stat.isDirectory()) {
+    copyDir(src, dest)
+  } else {
+    fs.copyFileSync(src, dest)
+  }
+}
+
+/**
+ * @param {string} srcDir
+ * @param {string} destDir
+ */
+ function copyDir(srcDir, destDir) {
+  fs.mkdirSync(destDir, { recursive: true })
+  for (const file of fs.readdirSync(srcDir)) {
+    const srcFile = path.resolve(srcDir, file)
+    const destFile = path.resolve(destDir, file)
+    copy(srcFile, destFile)
+  }
 }
 
 async function init() {
@@ -94,6 +116,29 @@ async function init() {
   } else if (!fs.existsSync(root)) {
     fs.mkdirSync(root);
   }
+
+  const templateDir = "./template/rust-project"
+
+  const write = (file, content) => {
+    const targetPath = path.join(root, file)
+    if (content) {
+      fs.writeFileSync(targetPath, content)
+    } else {
+      copy(path.join(templateDir, file), targetPath)
+    }
+  }
+
+  const files = fs.readdirSync(templateDir)
+  for (const file of files) {
+    write(file)
+  }
+
+  console.log(`\nDone. Now run:\n`)
+  if (root !== cwd) {
+    console.log(`  ${bold(green(`cd ${path.relative(cwd, root)}`))}`)
+  }
+  console.log(`  ${bold(green('cargo run'))}`)
+  console.log()
 }
 
 init().catch((e) => {

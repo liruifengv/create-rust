@@ -1,0 +1,43 @@
+{
+  "name": "create-rust",
+  "version": "0.0.1",
+  "description": "An easy way to create a Rust project",
+  "type": "module",
+  "bin": {
+    "create-rust": "outfile.cjs"
+  },
+  "files": [
+    "outfile.cjs",
+    "template"
+  ],
+  "engines": {
+    "node": "^14.18.0 || >=16.0.0"
+  },
+  "scripts": {
+    "build": "node ./scripts/build.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/liruifengv/create-rust.git"
+  },
+  "keywords": [
+    "rust",
+    "create-rust"
+  ],
+  "author": "liruifengv",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/liruifengv/create-rust/issues"
+  },
+  "homepage": "https://github.com/liruifengv/create-rust#readme",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^18.7.13",
+    "esbuild": "^0.15.5",
+    "kolorist": "^1.5.1",
+    "prompts": "^2.4.2",
+    "minimist": "^1.2.6"
+  }
+}

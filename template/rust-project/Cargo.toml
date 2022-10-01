@@ -1,0 +1,5 @@
+[package]
+name = "rust-project"
+version = "0.0.1"
+
+[dependencies]

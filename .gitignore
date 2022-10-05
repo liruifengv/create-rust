@@ -2,4 +2,3 @@ node_modules
 outfile.cjs
 .DS_Store
 /target
-Cargo.lock

@@ -1,0 +1,5 @@
+[package]
+name = "create-rust"
+version = "0.0.1"
+
+[dependencies]
